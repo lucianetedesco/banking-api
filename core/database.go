@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"github.com/lucianetedesco/banking-api/entities"
 	"github.com/lucianetedesco/banking-api/settings"
 	"gorm.io/driver/postgres"
 	_ "gorm.io/driver/postgres"
@@ -37,7 +38,7 @@ func NewDatabaseConnection(host string, port int, user string, pass string, dbNa
 }
 
 func (d DatabaseConnection) migrate() {
-	err := d.Db.AutoMigrate()
+	err := d.Db.AutoMigrate(&entities.Account{})
 	if err != nil {
 		log.Panic("Failed to migrate database: ", err.Error())
 	}
