@@ -12,6 +12,8 @@ func CreateRoutesAndRun() {
 	router.GET("/accounts", controllers.GetAccounts)
 	router.GET("/accounts/:account_id/balance", controllers.GetBalanceAccount)
 	router.POST("/login", controllers.AuthUser)
+	router.POST("/transfers", controllers.SaveTransfer)
+	router.GET("/transfers", controllers.GetTransfers)
 
 	router.Run()
 }

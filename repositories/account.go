@@ -12,6 +12,7 @@ type AccountRepository interface {
 	GetAllAccounts() ([]entities.Account, error)
 	GetBalanceAccount(accountId uint) (float64, error)
 	GetAccountByCPF(cpf string) (entities.Account, error)
+	UpdateBalanceAccount(accountID uint, newBaLance float64) error
 }
 
 type AccountRepositoryDB struct {
@@ -64,4 +65,8 @@ func (r *AccountRepositoryDB) GetBalanceAccount(accountId uint) (float64, error)
 	var account entities.Account
 	err := r.db.First(&account, accountId).Error
 	return account.Balance, err
+}
+
+func (r *AccountRepositoryDB) UpdateBalanceAccount(accountID uint, newBaLance float64) error {
+	return r.db.Model(&entities.Account{}).Where("id = ?", accountID).Update("balance", newBaLance).Error
 }
