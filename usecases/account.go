@@ -29,3 +29,7 @@ func (u AccountUseCase) SaveAccount(account entities.Account) (uint, error) {
 func (u AccountUseCase) GetAllAccounts() ([]entities.Account, error) {
 	return u.AccountRepository.GetAllAccounts()
 }
+
+func (u AccountUseCase) GetBalanceAccount(accountId uint) (float64, error) {
+	return u.AccountRepository.GetBalanceAccount(accountId)
+}

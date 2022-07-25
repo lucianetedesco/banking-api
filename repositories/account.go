@@ -10,6 +10,7 @@ import (
 type AccountRepository interface {
 	SaveAccount(account *entities.Account) (uint, error)
 	GetAllAccounts() ([]entities.Account, error)
+	GetBalanceAccount(accountId uint) (float64, error)
 }
 
 type AccountRepositoryDB struct {
@@ -47,4 +48,10 @@ func (r *AccountRepositoryDB) GetAllAccounts() ([]entities.Account, error) {
 	var accounts []entities.Account
 	err := r.db.Find(&accounts).Error
 	return accounts, err
+}
+
+func (r *AccountRepositoryDB) GetBalanceAccount(accountId uint) (float64, error) {
+	var account entities.Account
+	err := r.db.First(&account, accountId).Error
+	return account.Balance, err
 }

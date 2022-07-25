@@ -7,6 +7,7 @@ import (
 	"github.com/lucianetedesco/banking-api/repositories"
 	"github.com/lucianetedesco/banking-api/usecases"
 	"net/http"
+	"strconv"
 )
 
 func SaveAccount(c *gin.Context) {
@@ -51,4 +52,27 @@ func GetAccounts(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, accounts)
+}
+
+func GetBalanceAccount(c *gin.Context) {
+	d := core.GetDatabaseConnectionInstance()
+	repositoryAccount := repositories.NewAccountRepository(d.Db)
+	useCaseAccount := usecases.NewAccountUseCase(repositoryAccount)
+
+	accountId := c.Param("account_id")
+
+	u64, _ := strconv.ParseUint(accountId, 10, 32)
+	uAccountId := uint(u64)
+
+	balance, err := useCaseAccount.GetBalanceAccount(uAccountId)
+	if err != nil {
+		if err.Error() == "record not found" {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
+		}
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+
+	}
+	c.JSON(http.StatusOK, gin.H{"balance": balance})
 }
