@@ -15,6 +15,11 @@ type Account struct {
 	CreatedAt time.Time `json:"created_at,omitempty"`
 }
 
+type Login struct {
+	CPF    string `json:"cpf"`
+	Secret string `json:"secret"`
+}
+
 func (a Account) Validate() error {
 	if a.Name == "" {
 		return errors.New("name can't be empty")

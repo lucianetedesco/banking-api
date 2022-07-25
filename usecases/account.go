@@ -1,6 +1,8 @@
 package usecases
 
 import (
+	"errors"
+	"github.com/lucianetedesco/banking-api/core"
 	"github.com/lucianetedesco/banking-api/entities"
 	"github.com/lucianetedesco/banking-api/repositories"
 )
@@ -32,4 +34,22 @@ func (u AccountUseCase) GetAllAccounts() ([]entities.Account, error) {
 
 func (u AccountUseCase) GetBalanceAccount(accountId uint) (float64, error) {
 	return u.AccountRepository.GetBalanceAccount(accountId)
+}
+
+func (u AccountUseCase) GetAccount(login entities.Login) (string, error) {
+	account, err := u.AccountRepository.GetAccountByCPF(login.CPF)
+	if err != nil {
+		return "", err
+	}
+
+	if isCorrectSecret := account.IsCorrectSecret(login.Secret); !isCorrectSecret {
+		return "", errors.New("incorrect secret")
+	}
+
+	token, err := core.GenerateToken(account.ID)
+	if err != nil {
+		return "", err
+	}
+
+	return token, nil
 }

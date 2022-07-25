@@ -76,3 +76,32 @@ func GetBalanceAccount(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"balance": balance})
 }
+
+func AuthUser(c *gin.Context) {
+	d := core.GetDatabaseConnectionInstance()
+	repositoryAccount := repositories.NewAccountRepository(d.Db)
+	useCaseAccount := usecases.NewAccountUseCase(repositoryAccount)
+
+	var login entities.Login
+
+	if err := c.ShouldBind(&login); err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	token, err := useCaseAccount.GetAccount(login)
+	if err != nil {
+		if err.Error() == "account not found" {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
+		}
+		if err.Error() == "incorrect secret" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+			return
+		}
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"token": token})
+}

@@ -11,6 +11,7 @@ type AccountRepository interface {
 	SaveAccount(account *entities.Account) (uint, error)
 	GetAllAccounts() ([]entities.Account, error)
 	GetBalanceAccount(accountId uint) (float64, error)
+	GetAccountByCPF(cpf string) (entities.Account, error)
 }
 
 type AccountRepositoryDB struct {
@@ -48,6 +49,15 @@ func (r *AccountRepositoryDB) GetAllAccounts() ([]entities.Account, error) {
 	var accounts []entities.Account
 	err := r.db.Find(&accounts).Error
 	return accounts, err
+}
+
+func (r *AccountRepositoryDB) GetAccountByCPF(cpf string) (entities.Account, error) {
+	var account entities.Account
+	err := r.db.First(&account, "cpf = ?", cpf).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return account, errors.New("account not found")
+	}
+	return account, err
 }
 
 func (r *AccountRepositoryDB) GetBalanceAccount(accountId uint) (float64, error) {

@@ -28,6 +28,9 @@ func setDefaults() {
 	viper.SetDefault("Database.DBUser", "postgres")
 	viper.SetDefault("Database.DBPPassword", "postgres")
 	viper.SetDefault("Database.DBName", "banking-api")
+
+	viper.SetDefault("Auth.SecretKey", "511829610b5f42f0ca27a9e22f00abb2")
+	viper.SetDefault("Auth.ExpiresAt", 1)
 }
 
 func InitConfig() {
@@ -38,6 +41,9 @@ func InitConfig() {
 	viper.BindEnv("Database.DBUser", "DATABASE_USER")
 	viper.BindEnv("Database.DBPPassword", "DATABASE_PASSWORD")
 	viper.BindEnv("Database.DBName", "DATABASE_NAME")
+
+	viper.BindEnv("Auth.SecretKey", "AUTH_SECRET_KEY")
+	viper.BindEnv("Auth.ExpiresAt", "AUTH_TOKEN_EXPIRES_AT")
 
 	viper.AutomaticEnv()
 
