@@ -25,3 +25,7 @@ func (u AccountUseCase) SaveAccount(account entities.Account) (uint, error) {
 
 	return id, nil
 }
+
+func (u AccountUseCase) GetAllAccounts() ([]entities.Account, error) {
+	return u.AccountRepository.GetAllAccounts()
+}

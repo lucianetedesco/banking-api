@@ -9,6 +9,7 @@ import (
 
 type AccountRepository interface {
 	SaveAccount(account *entities.Account) (uint, error)
+	GetAllAccounts() ([]entities.Account, error)
 }
 
 type AccountRepositoryDB struct {
@@ -40,4 +41,10 @@ func (r *AccountRepositoryDB) SaveAccount(account *entities.Account) (uint, erro
 	}
 
 	return id, nil
+}
+
+func (r *AccountRepositoryDB) GetAllAccounts() ([]entities.Account, error) {
+	var accounts []entities.Account
+	err := r.db.Find(&accounts).Error
+	return accounts, err
 }

@@ -38,3 +38,17 @@ func SaveAccount(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{"account_id": id})
 }
+
+func GetAccounts(c *gin.Context) {
+	d := core.GetDatabaseConnectionInstance()
+	repositoryAccount := repositories.NewAccountRepository(d.Db)
+	useCaseAccount := usecases.NewAccountUseCase(repositoryAccount)
+
+	accounts, err := useCaseAccount.GetAllAccounts()
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	c.JSON(http.StatusOK, accounts)
+}
