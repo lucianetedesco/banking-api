@@ -26,7 +26,7 @@ func (a Account) Validate() error {
 	}
 
 	if a.CPF == "" {
-		return errors.New("cpf can't be empty")
+		return errors.New("CPF can't be empty")
 	}
 
 	if len(a.CPF) != 11 {
