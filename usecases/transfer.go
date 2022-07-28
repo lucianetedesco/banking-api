@@ -28,7 +28,9 @@ func (u TransferUseCase) SaveTransfer(transfer entities.Transfer, token string) 
 	transfer.AccountOriginId = wd
 
 	d := core.GetDatabaseConnectionInstance()
-	repositoryAccount := repositories.NewAccountRepository(d.Db)
+	tx := d.Db.Begin()
+
+	repositoryAccount := repositories.NewAccountRepository(tx)
 	useCaseAccount := NewAccountUseCase(repositoryAccount)
 
 	balanceAccountOrigin, err := useCaseAccount.GetBalanceAccount(transfer.AccountOriginId)
@@ -49,6 +51,7 @@ func (u TransferUseCase) SaveTransfer(transfer entities.Transfer, token string) 
 	err = repositoryAccount.UpdateBalanceAccount(transfer.AccountDestinationId, balanceAccountDestination+transfer.Amount)
 	id, err := u.TransferRepository.SaveTransfer(&transfer)
 
+	tx.Commit()
 	return id, err
 }
 
