@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  app:
+    build: .
+    container_name: banking-api
+    volumes:
+      - .:/go/src/
+    ports:
+      - '8080:8080'
+
+  db:
+    image: postgres:13.7
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=banking-api
+    ports:
+      - '5432:5432'
