@@ -22,9 +22,7 @@ make run
 ## Run Tests
 
 ```
-
 make test
-
 ```
 
 ## Routes:
