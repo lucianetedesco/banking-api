@@ -11,11 +11,11 @@ clean:
 
 ## test: run unit tests
 test:
-	go test -v main.go
+	go test ./... -v
 
 ## build: build the application
 build:
-	go build - o ${APP} main.go
+	go build -o ${APP} main.go
 
 ## run: run the application
 run:
