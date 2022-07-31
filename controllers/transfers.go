@@ -29,6 +29,11 @@ func SaveTransfer(c *gin.Context) {
 		return
 	}
 
+	if err := transfer.Validate(); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	id, err := useCaseTransfer.SaveTransfer(transfer, token)
 	if err != nil {
 		if err == errors.New("user unauthorized") {
