@@ -15,8 +15,8 @@ test:
 
 ## build: build the application
 build:
-	go build -o ${APP} main.go
+	docker-compose build
 
 ## run: run the application
 run:
-	go run main.go
+	docker-compose up

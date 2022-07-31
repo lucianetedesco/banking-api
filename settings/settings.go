@@ -23,7 +23,7 @@ type environment struct {
 var Environment environment
 
 func setDefaults() {
-	viper.SetDefault("Database.DBHost", "localhost")
+	viper.SetDefault("Database.DBHost", "db")
 	viper.SetDefault("Database.DBPort", 5432)
 	viper.SetDefault("Database.DBUser", "postgres")
 	viper.SetDefault("Database.DBPPassword", "postgres")

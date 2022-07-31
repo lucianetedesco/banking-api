@@ -12,13 +12,19 @@ The goal of this project is provide a transfer API between internal accounts of 
 ## Run Application
 
 ```
+make build
+```
+
+```
 make run
 ```
 
 ## Run Tests
 
 ```
+
 make test
+
 ```
 
 ## Routes:
@@ -36,6 +42,7 @@ make test
     "balance": 100
   }
   ```
+
 * **Responses**:
     * **Success**:
         * Status code: `201 - Created`

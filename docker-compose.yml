@@ -6,8 +6,10 @@ services:
     container_name: banking-api
     volumes:
       - .:/go/src/
+    ports:
+      - '8080:8080'
 
-  postgres:
+  db:
     image: postgres:13.7
     restart: always
     environment:
