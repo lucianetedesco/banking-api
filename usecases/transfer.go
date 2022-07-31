@@ -35,11 +35,10 @@ func (u TransferUseCase) SaveTransfer(transfer entities.Transfer, token string) 
 
 	balanceAccountOrigin, err := useCaseAccount.GetBalanceAccount(transfer.AccountOriginId)
 	if err != nil {
-		if balanceAccountOrigin <= 0 {
-			return 0, errors.New("amount in account must be greater than 0")
-		} else {
-			return 0, err
-		}
+		return 0, err
+	}
+	if balanceAccountOrigin < transfer.Amount {
+		return 0, errors.New("insufficient balance for transfer")
 	}
 
 	balanceAccountDestination, err := useCaseAccount.GetBalanceAccount(transfer.AccountDestinationId)

@@ -96,7 +96,7 @@ func AuthUser(c *gin.Context) {
 			return
 		}
 		if err.Error() == "incorrect secret" {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
 		c.AbortWithStatus(http.StatusInternalServerError)

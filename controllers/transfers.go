@@ -25,7 +25,7 @@ func SaveTransfer(c *gin.Context) {
 
 	token, err := getToken(c)
 	if err != nil {
-		c.JSON(http.StatusForbidden, err)
+		c.JSON(http.StatusUnauthorized, err)
 		return
 	}
 
@@ -35,7 +35,7 @@ func SaveTransfer(c *gin.Context) {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 			return
 		}
-		if err == errors.New("amount in account must be greater than 0") {
+		if err == errors.New("insufficient balance for transfer") {
 			c.JSON(http.StatusPreconditionFailed, gin.H{"error": err.Error()})
 			return
 		}
@@ -43,7 +43,7 @@ func SaveTransfer(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"transaction-id": id})
+	c.JSON(http.StatusOK, gin.H{"transaction_id": id})
 }
 
 func GetTransfers(c *gin.Context) {
@@ -53,7 +53,7 @@ func GetTransfers(c *gin.Context) {
 
 	token, err := getToken(c)
 	if err != nil {
-		c.JSON(http.StatusForbidden, err)
+		c.JSON(http.StatusUnauthorized, err)
 		return
 	}
 
